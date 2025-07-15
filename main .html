@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CYBER404 – WE HACK TO PROTECT BANGLADESH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      background: #0d0d0d;
+      color: #00ffcc;
+    }
+    header, footer {
+      text-align: center;
+      padding: 20px;
+      background: black;
+      border-bottom: 2px solid #00ffcc;
+    }
+    header h1 {
+      font-size: 2.5em;
+      text-shadow: 0 0 8px #00ffcc;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #111;
+      padding: 10px;
+      border-bottom: 1px solid #00ffcc;
+    }
+    nav a {
+      color: #00ffcc;
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: white;
+    }
+    .container {
+      padding: 20px;
+    }
+    .post {
+      background: #1a1a1a;
+      border: 1px solid #00ffcc;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .post h3 {
+      margin-top: 0;
+    }
+    .btn {
+      background: #00ffcc;
+      color: black;
+      border: none;
+      padding: 8px 15px;
+      margin: 5px 5px 0 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #00ccaa;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      background: #222;
+      color: #00ffcc;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    .admin, .auth {
+      background: #1a1a1a;
+      padding: 15px;
+      margin: 20px auto;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CYBER404</h1>
+    <p>WE HACK TO PROTECT BANGLADESH 🇧🇩</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#admin">Admin Panel</a>
+    <a href="#login">Login</a>
+    <a href="#register">Register</a>
+  </nav>
+
+  <div class="container" id="home">
+    <h2>🔐 Latest Posts</h2>
+    <div id="posts"></div>
+  </div>
+
+  <div class="admin" id="admin">
+    <h2>🛠️ Admin Panel</h2>
+    <input type="text" id="postTitle" placeholder="Post Title">
+    <textarea id="postContent" placeholder="Post Content"></textarea>
+    <button class="btn" onclick="addPost()">Publish Post</button>
+  </div>
+
+  <div class="auth" id="login">
+    <h2>🔐 Login</h2>
+    <input type="text" placeholder="Username">
+    <input type="password" placeholder="Password">
+    <button class="btn">Login</button>
+  </div>
+
+  <div class="auth" id="register">
+    <h2>🆕 Register</h2>
+    <input type="text" placeholder="Username">
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button class="btn">Create Account</button>
+  </div>
+
+  <footer>
+    <p>© 2025 CYBER404 – All rights reserved. Made in 🇧🇩</p>
+  </footer>
+
+  <script>
+    let posts = [];
+
+    function addPost() {
+      const title = document.getElementById('postTitle').value;
+      const content = document.getElementById('postContent').value;
+      if (title && content) {
+        posts.unshift({ title, content, likes: 0, comments: [] });
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postContent').value = '';
+        renderPosts();
+      }
+    }
+
+    function likePost(index) {
+      posts[index].likes++;
+      renderPosts();
+    }
+
+    function addComment(index) {
+      const commentInput = document.getElementById(`comment-${index}`);
+      const text = commentInput.value;
+      if (text) {
+        posts[index].comments.push(text);
+        commentInput.value = '';
+        renderPosts();
+      }
+    }
+
+    function renderPosts() {
+      const postContainer = document.getElementById('posts');
+      postContainer.innerHTML = '';
+      posts.forEach((post, i) => {
+        const postEl = document.createElement('div');
+        postEl.className = 'post';
+        postEl.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.content}</p>
+          <button class="btn" onclick="likePost(${i})">👍 Like (${post.likes})</button>
+          <button class="btn" onclick="sharePost(${i})">🔗 Share</button>
+          <div>
+            <textarea id="comment-${i}" placeholder="Add a comment..."></textarea>
+            <button class="btn" onclick="addComment(${i})">Comment</button>
+          </div>
+          <div>
+            <h4>💬 Comments:</h4>
+            ${post.comments.map(c => `<p>- ${c}</p>`).join('')}
+          </div>
+        `;
+        postContainer.appendChild(postEl);
+      });
+    }
+
+    function sharePost(index) {
+      alert("🔗 Shared: " + posts[index].title);
+    }
+
+    renderPosts(); // Initial empty
+  </script>
+</body>
+</html>
